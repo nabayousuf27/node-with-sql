@@ -1,6 +1,12 @@
 require('dotenv').config();
 const mysql = require('mysql2');
 const { faker } = require('@faker-js/faker');
+const express =  require("express");
+const app = express();
+const path = require("path");
+
+app.set("view engine" , "ejs");
+app.set("views", path.join(__dirname, "/views"));
 
 
 // Create the connection to database
@@ -10,8 +16,7 @@ const connection =  mysql.createConnection({
   database: 'delta_app',
   password: process.env.DB_PASSWORD,
 });
-//inserting new data
-let q = "INSERT INTO user (id,username,email,password) VALUES ?";
+
 
 // let users = [
 //   ["123b","123_newuserb","abc@gmail.comb","abcb"],
@@ -27,23 +32,15 @@ let  getRandomUser =  () =>  {
     faker.internet.password(),
   ];
 }
-let data = [];
-for( let i = 0; i<=100 ; i++ ){
-  data.push(getRandomUser()); //101 fake users data
-}
-try{
-connection.query(q, [data], (err,result) => {
-  if(err) throw err;
-  console.log(result);
-  console.log(result.length)
-  console.log(result[0]);
-  ;
+// //inserting new data
+// let q = "INSERT INTO user (id,username,email,password) VALUES ?";
 
-  });
-}catch(err){
-  console.log(err);
-}
-connection.end();
+// let data = [];
+// for( let i = 0; i<=100 ; i++ ){
+//   data.push(getRandomUser()); //101 fake users data
+// }
+
+
 
 
 // let  getRandomUser =  () =>  {
@@ -57,3 +54,34 @@ connection.end();
 
 
 // console.log(getRandomUser());
+app.get("/" , (req, res) => {
+  let q = 'select count(*) from user'; 
+  try{
+connection.query(q, (err,result) => {
+  if(err) throw err;
+  let results = result[0]["count(*)"];
+  res.render("home.ejs",{results});
+  });
+}catch(err){
+  console.log(err);
+  res.send("some error in database");
+}
+});
+
+app.listen ("8080" , () => {
+  console.log("server is listening to port 8080");
+})
+
+// try{
+// connection.query(q, [data], (err,result) => {
+//   if(err) throw err;
+//   console.log(result);
+//   console.log(result.length)
+//   console.log(result[0]);
+//   ;
+
+//   });
+// }catch(err){
+//   console.log(err);
+// }
+// connection.end();
