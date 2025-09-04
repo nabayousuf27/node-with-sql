@@ -12,12 +12,27 @@ const connection =  mysql.createConnection({
 });
 //inserting new data
 let q = "INSERT INTO user (id,username,email,password) VALUES ?";
-let users = [
-  ["123b","123_newuserb","abc@gmail.comb","abcb"],
-  ["123c","123_newuserc","abc@gmail.comc","abcc"]
-]
+
+// let users = [
+//   ["123b","123_newuserb","abc@gmail.comb","abcb"],
+//   ["123c","123_newuserc","abc@gmail.comc","abcc"]
+// ]
+
+//we need 100 users data , generating from faker
+let  getRandomUser =  () =>  {
+  return[ 
+    faker.string.uuid(),
+    faker.internet.username(),
+    faker.internet.email(),
+    faker.internet.password(),
+  ];
+}
+let data = [];
+for( let i = 0; i<=100 ; i++ ){
+  data.push(getRandomUser()); //101 fake users data
+}
 try{
-connection.query(q, [users], (err,result) => {
+connection.query(q, [data], (err,result) => {
   if(err) throw err;
   console.log(result);
   console.log(result.length)
@@ -31,13 +46,14 @@ connection.query(q, [users], (err,result) => {
 connection.end();
 
 
-let  getRandomUser =  () =>  {
-  return {
-    id: faker.string.uuid(),
-    username: faker.internet.username(),
-    email: faker.internet.email(),
-    password: faker.internet.password(),
-  };
-}
+// let  getRandomUser =  () =>  {
+//   return {
+//     id: faker.string.uuid(),
+//     username: faker.internet.username(),
+//     email: faker.internet.email(),
+//     password: faker.internet.password(),
+//   };
+// }
+
 
 // console.log(getRandomUser());
