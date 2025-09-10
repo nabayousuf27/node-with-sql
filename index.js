@@ -54,6 +54,8 @@ let  getRandomUser =  () =>  {
 
 
 // console.log(getRandomUser());
+
+//fetch and show total numbers of users on our app
 app.get("/" , (req, res) => {
   let q = 'select count(*) from user'; 
   try{
