@@ -4,11 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All users</title>
+    <style>
+        table, th, tr,td{
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
-    <h2>Usrnames for all the user in app : </h2>
-    <p>
-        <%= usernamesinapp %>
-    </p>
+    <h2>Usrnames for all the user in app :</h2>
+    <table>
+        <tr>
+            <th>username</th>
+       </tr>
+<%   for(usernames of result){  %> 
+    <tr>
+        <td>
+            <%= usernames.username %>
+        </td>
+    </tr>
+<% } %>
+    </table>
 </body>
 </html>

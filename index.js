@@ -70,19 +70,38 @@ connection.query(q, (err,result) => {
 }
 });
 
+// //show user 
+// app.get("/user", (req,res) => {
+//   let q = 'select username from user';
+//   try{
+//   connection.query(q, (err,result) => {
+//   if(err) throw err;
+//   let usernamesinapp = [];
+//   for( let i = 0 ; i < 104 ; i++){
+//      usernamesinapp.push((result[i]['username']));
+//      console.log(result[i]['username'])
+//   }
+//   // let usernamesinapp = result;
+//   res.render("user.ejs",{usernamesinapp});
+//   });
+// }catch(err){
+//   console.log(err);
+//   res.send("some error in database");
+// }
+// } )
+
+// app.listen ("8080" , () => {
+//   console.log("server is listening to port 8080");
+// })
 //show user 
 app.get("/user", (req,res) => {
   let q = 'select username from user';
   try{
   connection.query(q, (err,result) => {
   if(err) throw err;
-  let usernamesinapp = [];
-  for( let i = 0 ; i < 104 ; i++){
-     usernamesinapp.push((result[i]['username']));
-     console.log(result[i]['username'])
-  }
-  // let usernamesinapp = result;
-  res.render("user.ejs",{usernamesinapp});
+  res.render("user.ejs",{result});
+  // console.log(result)
+  // res.send(result);
   });
 }catch(err){
   console.log(err);
