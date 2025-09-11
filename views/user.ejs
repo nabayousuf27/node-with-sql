@@ -14,14 +14,22 @@
     <h2>Usrnames for all the user in app :</h2>
     <table>
         <tr>
-            <th>username</th>
+            <th>user Id</th>
+            <th>user name</th>
+            <th>user email</th>
+            <th>Edit</th>
        </tr>
 <%   for(usernames of result){  %> 
     <tr>
+        <td><%= usernames.id %></td>
+        <td><%= usernames.username %></td>
+        <td><%= usernames.email %></td>
         <td>
-            <%= usernames.username %>
+            <form method="GET" action="/user/<%=usernames.id%>/edit">
+                <button>Edit Username</button>
+            </form>
         </td>
-    </tr>
+     </tr>
 <% } %>
     </table>
 </body>
