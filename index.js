@@ -147,7 +147,36 @@ app.get("/user/:id/edit" , (req,res) => {
 
 //update route
 app.patch("/user/:id" , (req,res)=>{
-  res.send("req working")
+  //things coming from form :  password,newusername,id
+
+  let { id } = req.params;
+  let {username , password} = req.body; // username = new value from form, password = entered password
+  //1st : we searchh for that particular user
+  //2nd check if form pass == original password
+  //3rd : if correct password run update query
+
+  let q = `select * from user where id = '${id}'`;
+   try{
+      connection.query(q, (err,result) => {
+      if(err) throw err;
+      let userforedit = result[0];  //it has id ,username, password, and emails object - original from db
+      
+          if(password === userforedit.password){
+          //update query
+          let q = 'update user Set username = ? where id = ?';
+          connection.query(q, [username ,id], (err,result) => {
+          if(err) throw err;
+          res.redirect("/user");
+          });
+        }else{
+          res.send("wrong password");
+        }
+      });
+    
+    }catch(err){
+      console.log(err);
+      res.send("some error in database");
+    }
 })
 app.listen ("8080" , () => {
   console.log("server is listening to port 8080");

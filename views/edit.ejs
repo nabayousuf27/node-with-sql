@@ -8,8 +8,8 @@
 <in>
     <p>you are about to edit this form for  : <%= userforedit.email %> </p>
     <form method="post" action="/user/<%= userforedit.id %>?_method=PATCH">
-    <textarea> <%= userforedit.username%> </textarea>
-    <input type="password" name="password" placeholder="enter your password" value="userforedit.password">
+    <textarea name = "username"> <%= userforedit.username%> </textarea>
+    <input type="password" name="password" placeholder="enter your password">
     <button>edit</button>
     </form>
 </body>
