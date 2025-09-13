@@ -115,8 +115,6 @@ app.get("/user", (req,res) => {
 //edit route
 app.get("/user/:id/edit" , (req,res) => {
   let { id } = req.params;
-  // let {username} = req.body;
-  // let {password} = req.body;
   //for databases
       let q = `select * from user where id = '${id}'`;
 
@@ -131,18 +129,6 @@ app.get("/user/:id/edit" , (req,res) => {
       console.log(err);
       res.send("some error in database");
     }
-  //  //logic
-  //  if(password == userforedit.password){
-  //   userforedit.password = password;
-  //  }else{
-  //   //password remains same
-  //  }
-
-  // console.log(req.body)
-  // console.log(id)
-  // const {username} = req.body;
-  // console.log(username)
-  // res.send("hey you are in edit route")
 });
 
 //update route
@@ -178,6 +164,56 @@ app.patch("/user/:id" , (req,res)=>{
       res.send("some error in database");
     }
 })
+
+//delete Route
+app.get("/user/:id/delete" , (req,res) => {
+ 
+    let { id } = req.params;
+  //for databases
+      let q = `select * from user where id = '${id}'`;
+
+      try{
+      connection.query(q, (err,result) => {
+      if(err) throw err;
+      let user = result[0];  //it has id ,username, password, and emails object
+       res.render("delete.ejs",{user});
+      });
+
+    }catch(err){
+      console.log(err);
+      res.send("some error in database");
+    }
+})
+
+//delete Route patch request
+app.delete("/user/:id" , (req,res) => {
+ let { id } = req.params; 
+let {email , password} = req.body; //email, passwword written by user in delete form
+
+   let q = `select * from user where id = '${id}'`;
+   try {
+    connection.query(q, (err,result) => {
+      if(err) throw err;
+      let user = result[0];  //it has id ,username, password, and emails object - original from db
+      if(user.email === email && user.password === password){
+        //neseted query - run delete query
+        let q = 'delete From user where id = ?';
+        connection.query(q, [id], (err,result) => {
+          if(err) throw err;
+          res.redirect("/user");
+          });
+        }else{
+          res.send("wrong email or password");
+        }
+      })
+   } catch (err) {
+      console.log(err);
+      res.send("some error in database");
+   }
+})
+  
+  
+
 app.listen ("8080" , () => {
   console.log("server is listening to port 8080");
 })

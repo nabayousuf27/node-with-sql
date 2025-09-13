@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delte route</title>
+</head>
+<body>
+    <p>
+        you are about to delete this user 
+    </p>
+    <form method="post" action="/user/<%= user.id %>/?_method=Delete">
+        <input type="email" placeholder="enter your email" name="email">
+        <input type="password" placeholder="enter your password" name="password">
+        <button>Delete</button>
+    </form>
+</body>
+</html>
