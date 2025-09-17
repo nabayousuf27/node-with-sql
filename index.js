@@ -211,8 +211,34 @@ let {email , password} = req.body; //email, passwword written by user in delete 
       res.send("some error in database");
    }
 })
-  
-  
+//Insert new user
+app.get("/newUser",(req,res)=>{
+  res.render("newUser.ejs");
+})
+app.post("/newUser",(req,res)=>{
+  const {username} = req.body;
+  const {email} = req.body;
+  const {password} = req.body;
+  const id = faker.string.uuid();
+
+  // res.send(`data collected ${username} ,${ email} , ${password}`);
+
+  let q = `INSERT into User(id,username,email,password) values (?,?,?,?) `;
+   try {
+    connection.query(q,[id,username,email,password], (err,result) => {
+      if(err) throw err;
+      res.redirect("/user");
+      })
+   } catch (err) {
+      console.log(err);
+      res.send("some error in database");
+   }
+})
+// app.post("/user",(req,res)=>{
+//   let { username , email , password} = req.body;
+//   let id = faker.string.uuid();
+//   let q = "INSERT INTO user (id,username,email,password) VALUES (?,?,?,?)";       
+// }
 
 app.listen ("8080" , () => {
   console.log("server is listening to port 8080");
